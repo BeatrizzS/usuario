@@ -11,3 +11,7 @@ public class UsuarioApplication {
 	}
 
 }
+
+
+// endereco 3
+// telefone 5, 6
