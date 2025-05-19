@@ -1,5 +1,6 @@
 package com.beawata.usuario.business;
 
+import com.beawata.usuario.UsuarioApplication;
 import com.beawata.usuario.business.converter.UsuarioConverter;
 import com.beawata.usuario.business.dto.EnderecoDTO;
 import com.beawata.usuario.business.dto.TelefoneDTO;
@@ -109,4 +110,26 @@ public class UsuarioService {
         Telefone telefone = usuarioConverter.updateTelefone(dto, entity);
         return usuarioConverter.paraTelefoneDTO(telefoneRepository.save(telefone));
     }
+
+    public EnderecoDTO cadastraEndereco(String token, EnderecoDTO dto){
+        String email = jwtUtil.extractUsername(token.substring(7));
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() ->
+                new ResourceNotFoundException("Email não localizado " + email));
+
+        Endereco endereco = usuarioConverter.paraEnderecoEntity(dto, usuario.getId());
+        Endereco enderecoEntity = enderecoRepository.save(endereco);
+        return usuarioConverter.paraEnderecoDTO(enderecoEntity);
+    }
+
+    public TelefoneDTO cadastraTelefone(String token, TelefoneDTO dto){
+        String email = jwtUtil.extractUsername(token.substring(7));
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() ->
+                new ResourceNotFoundException("Email não localizado " + email));
+
+        Telefone telefone = usuarioConverter.paraTelefoneEntity(dto, usuario.getId());
+        //também pode ser feito dessa forma para poupar uma linha do código
+        // é a mesma coisa que o "Telefone telefoneEntity = telefoneRepository.save(telefone);"
+        return usuarioConverter.paraTelefoneDTO(telefoneRepository.save(telefone));
+    }
+
 }
