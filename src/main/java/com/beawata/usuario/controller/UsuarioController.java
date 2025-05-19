@@ -5,6 +5,8 @@ import com.beawata.usuario.business.UsuarioService;
 import com.beawata.usuario.business.dto.EnderecoDTO;
 import com.beawata.usuario.business.dto.TelefoneDTO;
 import com.beawata.usuario.business.dto.UsuarioDTO;
+import com.beawata.usuario.infrastructure.entity.Endereco;
+import com.beawata.usuario.infrastructure.entity.Telefone;
 import com.beawata.usuario.infrastructure.entity.Usuario;
 import com.beawata.usuario.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +68,17 @@ public class UsuarioController {
     public ResponseEntity<TelefoneDTO> atualizaTelefone(@RequestBody TelefoneDTO dto,
                                                         @RequestParam("id") Long id){
         return ResponseEntity.ok(usuarioService.atualizaTelefone(id, dto));
+    }
+
+    @PostMapping("/endereco")
+    public ResponseEntity<EnderecoDTO> cadastraEndereco(@RequestBody EnderecoDTO dto,
+                                                        @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(usuarioService.cadastraEndereco(token, dto));
+    }
+
+    @PostMapping("/telefone")
+    public ResponseEntity<TelefoneDTO> cadastraTelefone(@RequestBody TelefoneDTO dto,
+                                                        @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(usuarioService.cadastraTelefone(token, dto));
     }
 }
